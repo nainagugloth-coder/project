@@ -40,6 +40,8 @@ Lovable.dev – Frontend UI
 JavaScript – Data processing
 Webhook API – Communication
 # 5. Architecture Diagram
+<img width="401" height="423" alt="image" src="https://github.com/user-attachments/assets/24ff314b-8579-427a-b80d-5fe8b82e1656" />
+
 User (Frontend)
       ↓
 Webhook (n8n)
@@ -78,11 +80,12 @@ OpenAI API Docs
 Lovable.dev Docs
 MDN JavaScript Docs
 YouTube tutorials
-# 8. Recording
-
-(Add your demo video link here)
 
 # 9. Screenshots
+ n8n workflow
+<img width="1568" height="702" alt="image" src="https://github.com/user-attachments/assets/36fd7506-c1fc-437d-9ccf-ad8a0be98496" />
+excution
+<img width="1828" height="881" alt="image" src="https://github.com/user-attachments/assets/4e75e7c1-a5d2-46b4-b59d-45c912c63aed" />
 
 Include:
 
@@ -104,17 +107,17 @@ Solution:
 
 Added strict prompt rules
 Implemented JS filtering
- Problem 2: Wrong Number of Questions
 
+ Problem 2: Wrong Number of Questions
 AI returned extra questions
 
- Solution:
+Solution:
 
 Enforced count in prompt
 Used slicing in JS
- Problem 3: JSON Parsing Errors
 
-Invalid response format
+ Problem 3: JSON Parsing Errors
+ Invalid response format
 
  Solution:
 
