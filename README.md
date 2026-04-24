@@ -226,10 +226,15 @@ study-assistant/
 
  n8n automation workflow
 <img width="967" height="508" alt="image" src="https://github.com/user-attachments/assets/0fe04cd4-b225-4c67-be03-8b18c158aaf6" />
-
+ 
 
 ---
 
+Screen Recording
+
+https://drive.google.com/file/d/1aly2T20dWHADP2kLuSmZtSc2p35Q0Dik/view?usp=sharing
+
+---
  References & Resources
 
 - Groq API Documentation — https://console.groq.com/docs
