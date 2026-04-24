@@ -215,16 +215,18 @@ study-assistant/
  Screenshots
 
  Dashboard — Notes input and PDF upload
-![Dashboard](screenshots/dashboard.png)
+<img width="1298" height="655" alt="image" src="https://github.com/user-attachments/assets/5e97b7c4-b443-40c7-bdc0-7d3e9475cd02" />
 
  Output mode and difficulty selection
-![Modes](screenshots/modes.png)
+<img width="1208" height="869" alt="image" src="https://github.com/user-attachments/assets/b8f33c85-58ab-4136-b674-02bfb158a96f" />
 
  Generated flashcards output
-![Flashcards](screenshots/flashcards.png)
+<img width="1012" height="899" alt="image" src="https://github.com/user-attachments/assets/afd86f92-3a29-48e7-9bb4-560049bc5aaa" />
+
 
  n8n automation workflow
-![n8n Workflow](screenshots/n8n_workflow.png)
+<img width="967" height="508" alt="image" src="https://github.com/user-attachments/assets/0fe04cd4-b225-4c67-be03-8b18c158aaf6" />
+
 
 ---
 
