@@ -3,21 +3,6 @@
 > Transform your lecture notes into flashcards, summaries, and quizzes — with daily WhatsApp reminders.
 
 ---
-
-  Table of Contents
-
-- [Business Problem](#-business-problem)
-- [Possible Solution](#-possible-solution)
-- [Implemented Solution](#-implemented-solution)
-- [Tech Stack](#-tech-stack)
-- [Architecture Diagram](#-architecture-diagram)
-- [How to Run Locally](#-how-to-run-locally)
-- [Problems Faced & Solutions](#-problems-faced--solutions)
-- [Screenshots](#-screenshots)
-- [Recording](#-recording)
-- [References & Resources](#-references--resources)
-
----
   Business Problem
 
 - Students spend hours manually converting lengthy lecture notes into flashcards and summaries
@@ -76,7 +61,9 @@
 
  Architecture Diagram
 
-```
+<img width="947" height="722" alt="image" src="https://github.com/user-attachments/assets/ae8d5485-2781-4973-801e-8150c78512c5" />
+
+
 
 ---
 
