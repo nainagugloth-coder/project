@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Study Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.4rem;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a0aec0;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+            color: #2d3748;
+        }
+
+        textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 0.85rem;
+            border: 2px dashed #c3d0f5;
+            border-radius: 12px;
+            background: #f5f7ff;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .upload-btn:hover {
+            background: #edf0ff;
+            border-color: #667eea;
+        }
+
+        .pdf-status {
+            margin-top: 0.6rem;
+            font-size: 0.82rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 0.65rem 0.5rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mode-btn .icon {
+            font-size: 1.3rem;
+        }
+
+        .mode-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .slider-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .slider-header span {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .diff-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .diff-buttons {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .diff-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #718096;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .diff-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .diff-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-top: 1.5rem;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .generate-btn:disabled {
+            background: #cbd5e0;
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 0.75rem;
+        }
+
+        .loading-dots span {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.4;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .loading p {
+            color: white;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .error {
+            color: #e53e3e;
+            background: #fff5f5;
+            border: 1.5px solid #fed7d7;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        #output {
+            display: none;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .output-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .output-count {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            font-weight: 500;
+        }
+
+        .flashcard {
+            border: 1.5px solid #e8ecff;
+            border-radius: 14px;
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 0.85rem;
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.12);
+        }
+
+        .flashcard-number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .flashcard .front {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e8ecff;
+            margin: 0.6rem 0;
+        }
+
+        .flashcard .back {
+            color: #667eea;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .summary-text {
+            line-height: 1.8;
+            color: #4a5568;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="badge">AI Powered</div>
+            <h1>Study Assistant</h1>
+            <p>Transform your notes into flashcards, summaries, and quizzes</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Your Notes</div>
+            <textarea id="notes" placeholder="Paste your lecture notes here..."></textarea>
+            <input type="file" id="pdfUpload" accept=".pdf" style="display:none" />
+            <button class="upload-btn" onclick="document.getElementById('pdfUpload').click()">
+                📄 Upload PDF
+            </button>
+            <p class="pdf-status" id="pdfStatus"></p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Output Mode</div>
+            <div class="mode-buttons">
+                <button class="mode-btn active" data-mode="flashcards">
+                    <span class="icon">🃏</span> Flashcards
+                </button>
+                <button class="mode-btn" data-mode="summary">
+                    <span class="icon">📝</span> Summary
+                </button>
+                <button class="mode-btn" data-mode="quiz">
+                    <span class="icon">🧠</span> Quiz
+                </button>
+            </div>
+
+            <div class="slider-section">
+                <div class="slider-header">
+                    <span>Difficulty Level</span>
+                    <span class="diff-badge" id="diff-label">Medium</span>
+                </div>
+                <div class="diff-buttons">
+                    <button class="diff-btn" data-diff="Easy" onclick="setDiff(this)">Easy</button>
+                    <button class="diff-btn active" data-diff="Medium" onclick="setDiff(this)">Medium</button>
+                    <button class="diff-btn" data-diff="Hard" onclick="setDiff(this)">Hard</button>
+                </div>
+            </div>
+
+            <button class="generate-btn" id="generateBtn">✨ Generate</button>
+            <div class="error" id="error"></div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-dots">
+                <span></span><span></span><span></span>
+            </div>
+            <p>AI is working on your notes...</p>
+        </div>
+
+        <div class="card" id="output">
+            <div class="output-header">
+                <div class="output-title" id="outputTitle"></div>
+                <div class="output-count" id="outputCount"></div>
+            </div>
+            <div id="outputContent"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        var selectedMode = "flashcards";
+        var currentDiff = "Medium";
+
+        function setDiff(btn) {
+            document.querySelectorAll(".diff-btn").forEach(function (b) {
+                b.classList.remove("active");
+            });
+            btn.classList.add("active");
+            currentDiff = btn.getAttribute("data-diff");
+            document.getElementById("diff-label").textContent = currentDiff;
+        }
+
+        document.querySelectorAll(".mode-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".mode-btn").forEach(function (b) {
+                    b.classList.remove("active");
+                });
+                btn.classList.add("active");
+                selectedMode = btn.getAttribute("data-mode");
+            });
+        });
+
+        document.getElementById("pdfUpload").addEventListener("change", async function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            document.getElementById("pdfStatus").textContent = "Extracting text...";
+            var reader = new FileReader();
+            reader.onload = async function (event) {
+                var typedArray = new Uint8Array(event.target.result);
+                var pdf = await pdfjsLib.getDocument(typedArray).promise;
+                var fullText = "";
+                for (var i = 1; i <= pdf.numPages; i++) {
+                    var page = await pdf.getPage(i);
+                    var content = await page.getTextContent();
+                    fullText += content.items.map(function (item) { return item.str; }).join(" ") + "\n";
+                }
+                document.getElementById("notes").value = fullText;
+                document.getElementById("pdfStatus").textContent = "Extracted " + pdf.numPages + " page(s) from " + file.name;
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById("generateBtn").addEventListener("click", async function () {
+            var notes = document.getElementById("notes").value.trim();
+            var errorEl = document.getElementById("error");
+            var outputEl = document.getElementById("output");
+            var loadingEl = document.getElementById("loading");
+            var btn = document.getElementById("generateBtn");
+
+            errorEl.style.display = "none";
+            outputEl.style.display = "none";
+
+            if (!notes) {
+                errorEl.textContent = "Please paste some notes or upload a PDF first.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            btn.disabled = true;
+            loadingEl.style.display = "block";
+
+            try {
+                var res = await fetch("http://localhost:3000/processNotes", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ notes: notes, mode: selectedMode, difficulty: currentDiff })
+                });
+
+                var data = await res.json();
+                var content = data.choices[0].message.content;
+
+                document.getElementById("outputTitle").textContent =
+                    selectedMode === "flashcards" ? "Flashcards" :
+                        selectedMode === "summary" ? "Summary" : "Quiz";
+
+                if (selectedMode === "flashcards") {
+                    renderFlashcards(content);
+                } else {
+                    document.getElementById("outputContent").innerHTML =
+                        '<div class="summary-text">' + content + '</div>';
+                    document.getElementById("outputCount").textContent = "";
+                }
+
+                outputEl.style.display = "block";
+            } catch (err) {
+                errorEl.textContent = "Error connecting to server. Make sure it is running.";
+                errorEl.style.display = "block";
+            } finally {
+                btn.disabled = false;
+                loadingEl.style.display = "none";
+            }
+        });
+
+        function renderFlashcards(text) {
+            var container = document.getElementById("outputContent");
+            var lines = text.split("\n").filter(function (l) { return l.trim(); });
+            var cards = [];
+            var front = "";
+            var back = "";
+
+            lines.forEach(function (line) {
+                if (line.toLowerCase().indexOf("front:") !== -1) {
+                    front = line.replace(/\*?\*?front:\*?\*?/i, "").trim();
+                } else if (line.toLowerCase().indexOf("back:") !== -1) {
+                    back = line.replace(/\*?\*?back:\*?\*?/i, "").trim();
+                    if (front && back) cards.push({ front: front, back: back });
+                    front = "";
+                    back = "";
+                }
+            });
+
+            document.getElementById("outputCount").textContent = cards.length + " cards";
+
+            if (cards.length === 0) {
+                container.innerHTML = '<div class="summary-text">' + text + '</div>';
+                return;
+            }
+
+            container.innerHTML = cards.map(function (card, i) {
+                return '<div class="flashcard">' +
+                    '<div class="flashcard-number">Card ' + (i + 1) + '</div>' +
+                    '<div class="front">' + card.front + '</div>' +
+                    '<div class="divider"></div>' +
+                    '<div class="back">' + card.back + '</div>' +
+                    '</div>';
+            }).join("");
+        }
+    </script>
+
+</body>
+
+</html>
