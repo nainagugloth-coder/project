@@ -1,125 +1,256 @@
-# project
-AI Quiz Generator
-# 1. Business Problem
+ AI-Powered Study Assistant
 
-Students often face difficulty in finding quick and customized quizzes for practice.
-Most platforms:
+> Transform your lecture notes into flashcards, summaries, and quizzes — with daily WhatsApp reminders.
 
-Do not provide personalization
-Require manual searching
-Do not adapt to topic or difficulty
+---
 
-This results in time-consuming learning.
+  Table of Contents
 
-# 2. Possible Solution
+- [Business Problem](#-business-problem)
+- [Possible Solution](#-possible-solution)
+- [Implemented Solution](#-implemented-solution)
+- [Tech Stack](#-tech-stack)
+- [Architecture Diagram](#-architecture-diagram)
+- [How to Run Locally](#-how-to-run-locally)
+- [Problems Faced & Solutions](#-problems-faced--solutions)
+- [Screenshots](#-screenshots)
+- [Recording](#-recording)
+- [References & Resources](#-references--resources)
 
-An AI-powered system that:
+---
+  Business Problem
 
-Accepts user input (topic, difficulty, number of questions)
-Generates quizzes instantly
-Provides interactive answering and scoring
-# 3. Implemented Solution
+- Students spend hours manually converting lengthy lecture notes into flashcards and summaries
+- Without structured reminders, students forget to revise regularly, leading to poor retention
+- Existing study tools do not adapt content difficulty to individual student needs
+- Most study materials exist as PDFs with no automatic text extraction or AI processing
+- There is no single tool that combines note processing, quiz generation, and revision reminders
 
-We developed an AI Quiz Generator with:
+---
 
-Chat-based UI (Lovable)
-Backend automation (n8n)
-AI-generated quiz content
-JavaScript-based filtering for accuracy
-# Workflow:
-User enters query
-Request sent to Webhook
-AI generates quiz
-JavaScript filters valid questions
-Quiz returned to UI
-User answers and gets score
-# 4. Tech Stack Used
-n8n – Workflow automation
-OpenAI (GPT-4o-mini) – AI generation
-Lovable.dev – Frontend UI
-JavaScript – Data processing
-Webhook API – Communication
-# 5. Architecture Diagram
-<img width="401" height="423" alt="image" src="https://github.com/user-attachments/assets/24ff314b-8579-427a-b80d-5fe8b82e1656" />
+  Possible Solution
 
-User (Frontend)
-      ↓
-Webhook (n8n)
-      ↓
-AI Model (Quiz Generation)
-      ↓
-Edit Fields
-      ↓
-JavaScript (Filtering + Validation)
-      ↓
-Respond to Webhook
-      ↓
-Frontend Display
-# 6. How to Run in Local
-Step 1:
+- Build an AI-powered web app that automatically processes lecture notes and PDFs
+- Use a Large Language Model to generate flashcards, summaries, and quizzes on demand
+- Allow students to select difficulty levels so content adapts to their learning stage
+- Automate daily WhatsApp reminders to keep students consistent with revision
+- Support PDF uploads so students can directly use their existing study materials
 
-Run n8n (cloud or local)
+---
 
-Step 2:
+ Implemented Solution
 
-Click “Listen for test event”
+- Students can paste notes or upload a PDF directly on the dashboard
+- PDF.js extracts all text from the uploaded PDF automatically across all pages
+- The backend sends the extracted text to the Groq AI API for processing
+- AI generates 5 flashcards in Front/Back format based on the notes
+- AI creates a concise summary tailored to the selected difficulty level
+- AI produces a 5-question multiple choice quiz with answers
+- Difficulty buttons (Easy / Medium / Hard) adjust the complexity of all AI output
+- Smart text chunking ensures large PDFs do not exceed API token limits
+- n8n workflow sends an automated WhatsApp reminder every day at 9:00 AM via Twilio
 
-Step 3:
+---
 
-#Execute request using PowerShell:
+  Tech Stack
 
-[Invoke-RestMethod -Uri "https://your-n8n-url/webhook-test/quiz" -Method POST -Headers @{ "Content-Type" = "application/json" } -Body '{"topic":"science","difficulty":"easy","num_questions":3}'](https://naina13.app.n8n.cloud/webhook/quiz)
-Step 4:
+**Frontend**
+- HTML5, CSS3, JavaScript for the user interface
+- PDF.js for extracting text from uploaded PDF files
 
-Open frontend and test input:
- Easy science quiz with 3 questions
+**Backend**
+- Node.js as the runtime environment
+- Express.js for building the REST API server
+- Axios for making HTTP requests to the Groq API
+- dotenv for managing environment variables and protecting API keys
 
-# 7. References & Resources
-n8n Documentation
-OpenAI API Docs
-Lovable.dev Docs
-MDN JavaScript Docs
-YouTube tutorials
+**AI / LLM**
+- Groq API with the LLaMA 3.3 70B model for generating AI content
+- Custom text chunking logic to handle large documents within token limits
 
-# 9. Screenshots
- n8n workflow
-<img width="1568" height="702" alt="image" src="https://github.com/user-attachments/assets/36fd7506-c1fc-437d-9ccf-ad8a0be98496" />
-excution
-<img width="1828" height="881" alt="image" src="https://github.com/user-attachments/assets/4e75e7c1-a5d2-46b4-b59d-45c912c63aed" />
+**Automation**
+- n8n for building and running the daily reminder workflow
+- Twilio WhatsApp API for sending WhatsApp messages to students
 
-Include:
+---
 
-n8n workflow
-Execution logs
-Quiz UI
-Output screen
-🧾 10. Formatting & Alignment
-Structured headings
-Clean layout
-Easy readability
-Proper spacing and formatting
-# 11. Problems Faced & Solutions
- Problem 1: Random Questions
+ Architecture Diagram
 
-AI generated unrelated questions
+```
 
-Solution:
+---
 
-Added strict prompt rules
-Implemented JS filtering
+ How to Run Locally
 
- Problem 2: Wrong Number of Questions
-AI returned extra questions
+ Prerequisites
 
-Solution:
+- Node.js v18 or above installed
+- A free Groq API key from https://console.groq.com
+- n8n installed globally for WhatsApp reminders
+- A Twilio account with WhatsApp sandbox set up
 
-Enforced count in prompt
-Used slicing in JS
+---
 
- Problem 3: JSON Parsing Errors
- Invalid response format
+  Step 1 — Set up the project folder
 
- Solution:
+```bash
+cd D:\
+mkdir study-assistant
+cd study-assistant
+```
 
-Used .trim()
-Forced JSON-only output
+Place `server.js` and `index.html` inside this folder.
+
+---
+
+ Step 2 — Install dependencies
+
+```bash
+npm install express axios cors dotenv
+```
+
+---
+
+ Step 3 — Create the `.env` file
+
+Create a file named `.env` in the root of your project and add:
+
+```
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+>  Never share or commit your `.env` file. Add `.env` to your `.gitignore`.
+
+---
+
+ Step 4 — Start the backend server
+
+```bash
+npx kill-port 3000
+node server.js
+```
+
+You should see:
+
+```
+injected env (1) from .env
+Server running on port 3000
+```
+
+---
+
+ Step 5 — Open the frontend
+
+Open `index.html` directly in your browser:
+
+```
+D:\study-assistant\index.html
+```
+
+---
+
+ Step 6 — Set up n8n for WhatsApp reminders (optional)
+
+```bash
+npm install -g n8n
+n8n start
+```
+
+- Open `http://localhost:5678` in your browser
+- Create a new workflow
+- Add a **Schedule Trigger** node and set it to run daily at 9:00 AM
+- Add a **Twilio** node and fill in your Account SID and Auth Token
+- Set the From field to `whatsapp:+14155238886`
+- Set the To field to `whatsapp:+your_number`
+- Toggle **To WhatsApp** on
+- Type your reminder message
+- Click **Publish** to activate
+
+---
+
+ Project folder structure
+
+```
+study-assistant/
+├── server.js        ← Node.js backend server
+├── index.html       ← Frontend UI
+├── .env             ← API keys (never commit this)
+├── package.json
+└── node_modules/
+```
+
+---
+
+  Problems Faced & Solutions
+
+**1. Deprecated AI model**
+- Problem: `mixtral-8x7b-32768` was decommissioned by Groq
+- Solution: Switched to `llama-3.3-70b-versatile` which is actively supported
+
+**2. Rate limit exceeded with large PDFs**
+- Problem: Uploading a 16-page PDF sent too many tokens and hit the API limit
+- Solution: Implemented text chunking — only the first 9,000 characters are sent per request
+
+**3. API key exposed in source code**
+- Problem: The Groq API key was hardcoded directly in `server.js`
+- Solution: Moved the key to a `.env` file and loaded it using the `dotenv` package
+
+**4. Port conflict error (EADDRINUSE)**
+- Problem: Running `node server.js` failed because port 3000 was already in use
+- Solution: Run `npx kill-port 3000` before starting the server each time
+
+**5. Difficulty slider frozen in browser**
+- Problem: The HTML range input slider was unresponsive and stuck in the middle
+- Solution: Replaced the broken slider with three clickable buttons (Easy / Medium / Hard)
+
+**6. Wrong `.env` filename**
+- Problem: The file was created as `study.env` instead of `.env` so dotenv could not find it
+- Solution: Renamed the file correctly to `.env` with no prefix
+
+**7. n8n password forgotten**
+- Problem: Could not log in to n8n after closing and reopening it
+- Solution: Ran `n8n user-management:reset` in the terminal to reset and create a new account
+
+**8. Invalid Groq API key error**
+- Problem: The API returned `invalid_api_key` even after setting up the `.env` file
+- Solution: Generated a fresh API key from the Groq console and updated the `.env` file
+
+**9. Server crashing with `Cannot find module 'dotenv'`**
+- Problem: `dotenv` was installed in the wrong folder instead of the project folder
+- Solution: Navigated to the correct project folder first, then ran `npm install dotenv`
+
+**10. Twilio WhatsApp number not valid**
+- Problem: n8n returned an error saying the phone number was not valid
+- Solution: Joined the Twilio WhatsApp sandbox by sending the join code from the phone to `+14155238886` first
+
+---
+
+ Screenshots
+
+ Dashboard — Notes input and PDF upload
+![Dashboard](screenshots/dashboard.png)
+
+ Output mode and difficulty selection
+![Modes](screenshots/modes.png)
+
+ Generated flashcards output
+![Flashcards](screenshots/flashcards.png)
+
+ n8n automation workflow
+![n8n Workflow](screenshots/n8n_workflow.png)
+
+---
+
+ References & Resources
+
+- Groq API Documentation — https://console.groq.com/docs
+- LLaMA Model Info — https://groq.com/models
+- PDF.js Library — https://mozilla.github.io/pdf.js
+- Node.js Documentation — https://nodejs.org/en/docs
+- Express.js Documentation — https://expressjs.com
+- n8n Documentation — https://docs.n8n.io
+- Twilio WhatsApp Sandbox — https://console.twilio.com
+- dotenv Package — https://www.npmjs.com/package/dotenv
+- Axios Package — https://axios-http.com/docs/intro
+
+
